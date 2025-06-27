@@ -24,8 +24,33 @@ const __dirname = path.dirname(__filename);
 dotenv.config();
 const app = express();
 
-app.use(cors({ origin: 'https://friendbookfrontend.vercel.app' }));
-app.options('*', cors());
+// app.use(cors({ origin: 'https://friendbookfrontend.vercel.app' }));
+// app.options('*', cors());
+const allowedOrigins = ['https://friendbookfrontend.vercel.app'];
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    credentials: true, // only if you're using cookies (optional)
+  })
+);
+
+// Important: handle preflight OPTIONS for all routes
+app.options(
+  '*',
+  cors({
+    origin: 'https://friendbookfrontend.vercel.app',
+    methods: ['GET', 'POST', 'OPTIONS'],
+    allowedHeaders: ['Content-Type'],
+    credentials: true, // match credentials setting above
+  })
+);
+
 app.use(express.json());
 app.use(helmet());
 app.use(helmet.crossOriginResourcePolicy({ policy: 'cross-origin' }));
