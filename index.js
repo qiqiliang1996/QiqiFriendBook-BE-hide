@@ -25,6 +25,7 @@ dotenv.config();
 const app = express();
 
 app.use(cors({ origin: 'https://friendbookfrontend.vercel.app' }));
+app.options('*', cors());
 app.use(express.json());
 app.use(helmet());
 app.use(helmet.crossOriginResourcePolicy({ policy: 'cross-origin' }));
