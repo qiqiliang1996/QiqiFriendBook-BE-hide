@@ -26,7 +26,10 @@ const app = express();
 
 // app.use(cors({ origin: 'https://friendbookfrontend.vercel.app' }));
 // app.options('*', cors());
-const allowedOrigins = ['https://friendbookfrontend.vercel.app'];
+const allowedOrigins = [
+  'https://friendbookfrontend.vercel.app',
+  'http://localhost:3000',
+];
 
 const corsOptions = {
   origin: function (origin, callback) {
@@ -38,7 +41,7 @@ const corsOptions = {
   },
   credentials: true,
   methods: ['GET', 'POST', 'OPTIONS'],
-  allowedHeaders: ['Content-Type'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
 };
 
 // ✅ Apply to all routes and preflight in ONE go
