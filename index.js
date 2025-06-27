@@ -23,13 +23,8 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 dotenv.config();
 const app = express();
-const corsOptions = {
-  origin: '*',
-  credentials: true, //access-control-allow-credentials:true
-  optionSuccessStatus: 200,
-};
 
-app.use(cors(corsOptions));
+app.use(cors({ origin: 'https://friendbookfrontend.vercel.app/' }));
 app.use(express.json());
 app.use(helmet());
 app.use(helmet.crossOriginResourcePolicy({ policy: 'cross-origin' }));
