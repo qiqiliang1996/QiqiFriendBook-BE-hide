@@ -27,29 +27,23 @@ const app = express();
 // app.use(cors({ origin: 'https://friendbookfrontend.vercel.app' }));
 // app.options('*', cors());
 const allowedOrigins = ['https://friendbookfrontend.vercel.app'];
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error('Not allowed by CORS'));
-      }
-    },
-    credentials: true, // only if you're using cookies (optional)
-  })
-);
 
-// Important: handle preflight OPTIONS for all routes
-app.options(
-  '*',
-  cors({
-    origin: 'https://friendbookfrontend.vercel.app',
-    methods: ['GET', 'POST', 'OPTIONS'],
-    allowedHeaders: ['Content-Type'],
-    credentials: true, // match credentials setting above
-  })
-);
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type'],
+};
+
+// ✅ Apply to all routes and preflight in ONE go
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
 
 app.use(express.json());
 app.use(helmet());
